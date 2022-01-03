@@ -1,0 +1,23 @@
+title Exercise 0.4: new note
+
+note right of browser:
+clicking 'save'
+sending data via POST
+end note
+
+browser -> server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note
+
+note left of server:
+creating new note object
+adding to array
+URL redirect
+end note
+
+browser -> server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
+server -> browser: html codes
+browser -> server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+server -> browser: main.css
+browser -> server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js
+server -> browser: main.js
+browser -> server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+server -> browser: [{"content":"hfggf","date":"2022-01-02T20:15:49.008Z"}...]

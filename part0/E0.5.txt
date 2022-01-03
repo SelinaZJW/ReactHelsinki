@@ -1,0 +1,17 @@
+title E0.5: single page app
+
+
+browser -> server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa
+server -> browser: html codes
+browser -> server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+server -> browser: main.css
+browser -> server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+server -> browser: spa.js
+
+note right of browser:
+request JSON data from server
+end note
+
+browser -> server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+server -> browser: [[{"content":"hola","date":"2022-01-02T23:58:49.306Z"}...]
+

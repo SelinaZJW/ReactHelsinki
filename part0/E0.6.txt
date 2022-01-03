@@ -1,0 +1,11 @@
+title E0.6: single page app new note
+
+note right of browser:
+fetching form element
+preventing form submit
+rerendering note list
+sending data as JSON-string
+end note
+
+browser -> server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+
