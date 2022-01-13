@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import personService from './services/persons'
 
 const Filter = ({newSearch, handleSearchChange}) => {
   return (
@@ -32,10 +32,10 @@ const Form = ({addPerson, newName, handleNameChange, newNumber, handleNumberChan
   )
 }
 
-const DisplayLine = ({name, number}) => {
+const DisplayLine = ({name, number, deletePerson, id}) => {
   return (
     <div>
-      <li>{name}: {number}</li>
+      <li>{name}: {number}  <button onClick={deletePerson} value={id}>delete</button></li>
     </div>
   )
 }
@@ -50,16 +50,26 @@ const DisplayLine = ({name, number}) => {
   //return null
 //}
 
-const Display = ({persons}) => {
+const Display = ({persons, deletePerson}) => {
     return (
       <div>
         {/* <Alert alert={alert} existingName={newName}/>  */}
         <ul>
-          {persons.map(p => <DisplayLine key={p.id} name={p.name} number={p.number}/>)}
+          {persons.map(p => <DisplayLine key={p.id} name={p.name} number={p.number} 
+            id={p.id} deletePerson={deletePerson} />)}
         </ul>
       </div>
     )
   } 
+
+const Notification = ({message, color}) => {
+
+ return message !== null &&  (
+   <div>
+     <p className='notification' style={{color: color}}>{message}</p>
+   </div>
+ )
+}
 
 
 
@@ -70,15 +80,15 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   // const [alert, setAlert] = useState(false)
   const [newSearch, setNewSearch] = useState('')
-  //const [showAll, setShowAll] = useState(true)   
+  //const [showAll, setShowAll] = useState(true)  
+  const [message, setNewMessage] = useState(null) 
+  const [color, setNewColor] = useState('green')
 
   useEffect(() => {
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response =>{
-        console.log('promised fulfilled')
-        setPersons(response.data)
+    personService
+      .getAll()
+      .then(initialPersons =>{
+        setPersons(initialPersons)
       })
   }, []
   )
@@ -91,16 +101,78 @@ const App = () => {
 
     if (!exist) {
       const personsObject = {
-        id: persons.length +1,
         name: newName, 
         number: newNumber
       }
-      setPersons(persons.concat(personsObject))
-      setNewName('')
-      setNewNumber('')
+      personService
+        .create(personsObject)
+        .then(newPerson => {
+          setPersons(persons.concat(newPerson))
+          setNewName('')
+          setNewNumber('')
+          
+          setNewMessage(`Added ${newName}`)
+          setTimeout(() => {
+            setNewMessage(null)
+          }, 5000)
+        })
     } else {
       //setAlert(true)         //      how to change status?? not (alert === false) -> set(false/true)
-      window.alert(`${newName} is already in the phonebook`)
+      if (window.confirm(`${newName} is already in the phonebook. Replace the old number with a new one?`)) {
+        const existedPerson = persons.find(p => p.name == newName)
+        const changedPerson = {...existedPerson, number: newNumber}
+        console.log(changedPerson)
+
+        personService
+          .update(existedPerson.id, changedPerson)
+          .then(returnedPerson => {
+            setPersons(persons.map(p => p.name == newName? returnedPerson : p) )
+            
+            setNewMessage(`Changed ${newName}'s number`)
+            setTimeout(() => {
+              setNewMessage(null)
+            }, 5000)
+          })
+          .catch(error => {
+            console.log('failure')
+            setPersons(persons.filter(p => p.name !== newName))
+
+            setNewMessage(`Information of ${newName} has already been removed`)
+            setNewColor('red')
+            setTimeout(() => {
+              setNewMessage(null)
+              setNewColor('green')
+            }, 5000)
+          })
+
+      }
+    }
+  }
+
+  const deletePerson = (event) => {
+    const selectedPersonId = event.target.value
+    const selectedPersonIndex = persons.indexOf(persons.find(p => p.id == selectedPersonId))
+    
+    const array1 = persons.slice(0, selectedPersonIndex)
+    const array2 = persons.slice(selectedPersonIndex+1)
+    
+    console.log(array1.concat(array2))
+    console.log(selectedPersonIndex)
+    console.log(selectedPersonId)
+
+    if (window.confirm(`Delete ${persons[selectedPersonIndex].name}?`)) {
+      personService
+        .remove(selectedPersonId)
+        .then(()=> {
+          console.log('deleted')
+          setPersons(array1.concat(array2))
+          
+          setNewMessage(`Deleted ${persons.find(p => p.id == selectedPersonId).name}`)
+          setTimeout(() => {
+            setNewMessage(null)
+          }, 5000)
+        }
+        )
     }
   }
   
@@ -124,13 +196,14 @@ const App = () => {
   //const personsToShow = showAll
     //? persons
     //: persons.filter(persons => persons.name.toLowerCase().includes(newSearch.toLowerCase()) === true)
-
   const personsToShow = persons.filter(persons => persons.name.toLowerCase().includes(newSearch.toLowerCase()) === true)
 
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} color={color}/>
+      
       <Filter newSearch={newSearch} handleSearchChange={handleSearchChange} />
       
       <h3>Add a new</h3>
@@ -140,7 +213,7 @@ const App = () => {
       />
       
       <h3>Numbers</h3>
-      <Display persons={personsToShow} newName={newName}/>
+      <Display persons={personsToShow} newName={newName} deletePerson={deletePerson}/>
     </div>
   )
 }
