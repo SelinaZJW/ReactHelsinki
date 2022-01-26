@@ -1,0 +1,9 @@
+POST http://localhost:3001/api/persons HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Za",
+    "number": "130-342-34235423"
+}
+###
+GET https://thawing-tundra-05656.herokuapp.com/api/persons
