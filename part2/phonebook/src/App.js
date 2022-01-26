@@ -116,6 +116,16 @@ const App = () => {
             setNewMessage(null)
           }, 5000)
         })
+        .catch(error => {
+          console.log(error.response.data)
+
+          setNewMessage(error.response.data.error)
+            setNewColor('red')
+            setTimeout(() => {
+              setNewMessage(null)
+              setNewColor('green')
+            }, 5000)
+        })
     } else {
       //setAlert(true)         //      how to change status?? not (alert === false) -> set(false/true)
       if (window.confirm(`${newName} is already in the phonebook. Replace the old number with a new one?`)) {
@@ -134,10 +144,11 @@ const App = () => {
             }, 5000)
           })
           .catch(error => {
-            console.log('failure')
-            setPersons(persons.filter(p => p.name !== newName))
+            // window.alert(error)
+            // console.log('failure')
+            // setPersons(persons.filter(p => p.name !== newName))
 
-            setNewMessage(`Information of ${newName} has already been removed`)
+            setNewMessage(error.response.data.error)
             setNewColor('red')
             setTimeout(() => {
               setNewMessage(null)
