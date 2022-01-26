@@ -1,0 +1,9 @@
+POST http://localhost:3003/api/blogs HTTP/1.1
+content-type: application/json
+
+{
+    "title": "The makings of a great cook",
+    "author": "GordonRamseee",
+    "url": "http://i-am-a-great-cook.com",
+    "likes": 882345
+}
