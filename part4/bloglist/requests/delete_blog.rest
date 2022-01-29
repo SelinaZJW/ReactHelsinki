@@ -1,0 +1,12 @@
+
+DELETE http://localhost:3003/api/blogs/61f1a4dace0bd43815a4e610 HTTP/1.1
+###
+POST http://localhost:3003/api/blogs HTTP/1.1
+content-type: application/json
+
+{
+    "title": "The makings of a great cook",
+    "author": "GordonRamseee",
+    "url": "http://i-am-a-great-cook.com",
+    "likes": 882345
+}

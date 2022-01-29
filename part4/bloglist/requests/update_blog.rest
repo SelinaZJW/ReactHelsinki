@@ -1,0 +1,9 @@
+PUT http://localhost:3003/api/blogs/61f55fe633fa6fc3c119dfd0 HTTP/1.1
+content-type: application/json
+
+{
+    "title": "The makings of a great cook",
+    "author": "Gordon Ramsy",
+    "url": "http://i-am-a-great-cook.com",
+    "likes": 882345
+}
