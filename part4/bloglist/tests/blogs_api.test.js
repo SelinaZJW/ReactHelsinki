@@ -72,7 +72,11 @@ test('a blog can be added', async () => {
         likes: 100,
     }
 
-    await api.post('/api/blogs').send(newBlog)
+    await api
+            .post('/api/blogs')
+            .send(newBlog)
+            //.setHeader({ Authorization: token })
+            //authorization??? how to define token within tests
     const  response = await api.get('/api/blogs')
     console.log(response.body)
 
@@ -89,7 +93,10 @@ test('an added blog missing likes entry is default at 0 likes', async () => {
         url: "http://added.com"
     }
 
-    await api.post('/api/blogs').send(newBlog)
+    await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .set({ Authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNlbGluYVp6eiIsImlkIjoiNjFmNWI0ZTNlY2YwY2YwOWUyNTQ5MDgzIiwiaWF0IjoxNjQzNTA0NjgyfQ.72DI7yr7OqgwWO69VINc9-6Nj9y16quMNO5nlsDPa8Y' })
     const response = await api.get('/api/blogs')
     const addedBlog = response.body[initialBlogs.length]
     expect(addedBlog.likes).toEqual(0)
@@ -100,7 +107,10 @@ test('if new blog has no title and no url, backend responds with 400 bad request
         author: "devloper",
         likes: 2000
     }
-    const response = await api.post('/api/blogs').send(newBlog)
+    const response = await api
+                            .post('/api/blogs')
+                            .send(newBlog)
+                            .set( 'Authorization', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNlbGluYVp6eiIsImlkIjoiNjFmNWI0ZTNlY2YwY2YwOWUyNTQ5MDgzIiwiaWF0IjoxNjQzNTA0NjgyfQ.72DI7yr7OqgwWO69VINc9-6Nj9y16quMNO5nlsDPa8Y' )
     expect(response.status).toEqual(400)
 })
 

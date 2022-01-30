@@ -1,8 +1,9 @@
 POST http://localhost:3003/api/blogs HTTP/1.1
 content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNlbGluYVp6eiIsImlkIjoiNjFmNWI0ZTNlY2YwY2YwOWUyNTQ5MDgzIiwiaWF0IjoxNjQzNDk5OTAyfQ.1PZee2sgjcER7irL5UliYXDWeIbo0g3V5Py6NBE_wws
 
 {
-    "title": "Now???",
+    "title": "request.token.console as a string",
     "author": "Heythere",
     "url": "http://aaaah.com",
     "likes": 8,
