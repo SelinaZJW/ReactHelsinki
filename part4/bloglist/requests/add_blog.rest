@@ -3,9 +3,8 @@ content-type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNlbGluYVp6eiIsImlkIjoiNjFmNWI0ZTNlY2YwY2YwOWUyNTQ5MDgzIiwiaWF0IjoxNjQzNDk5OTAyfQ.1PZee2sgjcER7irL5UliYXDWeIbo0g3V5Py6NBE_wws
 
 {
-    "title": "request.token.console as a string",
+    "title": "request.token succeed?",
     "author": "Heythere",
     "url": "http://aaaah.com",
-    "likes": 8,
-    "userId": "61f5b4e3ecf0cf09e2549083"
+    "likes": 10
 }

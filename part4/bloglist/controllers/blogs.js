@@ -41,9 +41,12 @@ blogsRouter.get('/:id', async (request, response, next) => {
 })
 
 blogsRouter.post('/', async (request, response, next) => {
+  console.log("POST /api/blogs")
+  console.log(request.headers)
+  console.log("Token:")
   console.log(request.token)
-  console.log(request.decodedToken.id)
-  console.log(request.user)
+  //console.log(request.decodedToken.id)
+  // console.log(request.user)
   const body = request.body
   //const user = await User.findById(body.userId)
   
@@ -54,6 +57,7 @@ blogsRouter.post('/', async (request, response, next) => {
   }
   //const user = await User.findById(decodedToken.id)
   const user = request.user
+  console.log(user)
 
 
   const blog = new Blog ({
@@ -74,7 +78,9 @@ blogsRouter.post('/', async (request, response, next) => {
   if (!body.title && !body.url) {
     response.status(400).end()
   } else {
-    const savedBlog = await blog.save()
+    const blog_ = await blog.save() //.populate('user', { blogs: 0 })
+    const savedBlog = await Blog.populate(blog_, 'user' )
+
     user.blogs = await user.blogs.concat(savedBlog._id)
     console.log(user.blogs)
     await user.save()
@@ -109,6 +115,7 @@ blogsRouter.delete('/:id', async (request, response, next) => {
 
 blogsRouter.put('/:id', async (request, response, next) => {
   const body = request.body
+  //const user = request.user
 
   const blog = {
     title: body.title,
