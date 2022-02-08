@@ -37,7 +37,7 @@ const Blog = ({ blog, user, updateLikes, deleteBlog }) => {
   //   // return {display: (blog.user[0] && user.id === blog.user[0].id) ? '': 'none'}
   // }, [user])
 
-  const removeVisibility = { display: (blog.user[0] && user.id === blog.user[0].id) ? '': 'none' }
+  const removeVisibility = { display: (blog.user !==[] && user.id === blog.user[0].id) ? '': 'none' }
   const blogStyle = {
     paddingTop: 5,
     paddingLeft: 4,
@@ -49,11 +49,11 @@ const Blog = ({ blog, user, updateLikes, deleteBlog }) => {
 
   return (
     <div style={blogStyle}>
-      <div style={hideWhenVisible}>
+      <div style={hideWhenVisible} className='blogDefault'>
         {blog.title} {blog.author} <button onClick={toggleVisibility}>view</button>
       </div>
 
-      <div style= {showWhenVisible}>
+      <div style= {showWhenVisible} className='blogDetails'>
         <ul>
           <li>{blog.title} {blog.author} <button onClick={toggleVisibility}>hide</button></li>
           <li>{blog.url}</li>
