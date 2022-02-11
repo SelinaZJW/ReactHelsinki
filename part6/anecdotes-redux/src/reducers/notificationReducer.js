@@ -38,6 +38,21 @@ export const createNotification = (content) => {
     }
   }
 
+export const setNotification = (message, timer) => {
+  return async dispatch => {
+    dispatch({
+      type: 'SET_MESSAGE', 
+      data: {message: message, display: ''}
+    })
+    setTimeout(()=> {
+      dispatch({
+        type: 'SET_MESSAGE', 
+        data: {message: '', display: 'none'}
+      })
+    }, timer)
+  }
+}
+
 export const updateDisplay = () => {
   
     return {
