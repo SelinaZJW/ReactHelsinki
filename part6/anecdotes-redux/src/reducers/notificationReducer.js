@@ -21,29 +21,45 @@ const notificationReducer = (state = initialState, action) => {
     }
 }
 
-export const voteNotification = (content) => {
-   const msg = `you voted '${content}'`
+// export const voteNotification = (content) => {
+//    const msg = `you voted '${content}'`
 
-    return {
-      type: 'SET_MESSAGE',
-      data: {message: msg, display: ''}
-    }
-  }
+//     return {
+//       type: 'SET_MESSAGE',
+//       data: {message: msg, display: ''}
+//     }
+//   }
 
-export const createNotification = (content) => {
-    const msg = `you created '${content}'`
-    return {
-      type: 'SET_MESSAGE',
-      data: {message: msg, display: ''}
-    }
-  }
+// export const createNotification = (content) => {
+//     const msg = `you created '${content}'`
+//     return {
+//       type: 'SET_MESSAGE',
+//       data: {message: msg, display: ''}
+//     }
+//   }
+
+// export const updateDisplay = () => {
+  
+//     return {
+//       type: 'SET_DISPLAY',
+//       data: {message: '', display: 'none'}
+//     }
+//   }
 
 export const setNotification = (message, timer) => {
-  return async dispatch => {
+  return async (dispatch, state) => {
+    // const timeoutId = setTimeout(()=> {
+    //   dispatch({
+    //     type: 'SET_MESSAGE', 
+    //     data: {message: '', display: 'none'}
+    //   })
+    // }, timer)
+
     dispatch({
       type: 'SET_MESSAGE', 
       data: {message: message, display: ''}
     })
+
     setTimeout(()=> {
       dispatch({
         type: 'SET_MESSAGE', 
@@ -52,13 +68,5 @@ export const setNotification = (message, timer) => {
     }, timer)
   }
 }
-
-export const updateDisplay = () => {
-  
-    return {
-      type: 'SET_DISPLAY',
-      data: {message: '', display: 'none'}
-    }
-  }
 
 export default notificationReducer

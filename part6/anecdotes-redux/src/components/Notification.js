@@ -1,9 +1,11 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+//import { useSelector } from 'react-redux'
+import { connect } from 'react-redux'
 
-const Notification = () => {
-  const notification = useSelector(state => state.notification.message)
-  const display = useSelector(state => state.notification.display)
+const Notification = (props) => {
+  // const notification = useSelector(state => state.notification.message)
+  // const display = useSelector(state => state.notification.display)
+  
   // if (notification !== '') {
   //   setDisplay('')
   //   setTimeout(()=> {
@@ -15,13 +17,21 @@ const Notification = () => {
     border: 'solid',
     padding: 10,
     borderWidth: 1,
-    display: display
+    display: props.notification.display
   }
   return (
     <div style={style}  >
-      {notification}
+      {props.notification.message}
     </div>
   )
 }
 
-export default Notification
+const mapStateToProps = (state) => {
+  return {
+    notification: state.notification
+  }
+}
+
+const ConnectedNotification = connect(mapStateToProps)(Notification)
+
+export default ConnectedNotification
