@@ -8,7 +8,7 @@
     "prop-types": "^15.8.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "react-scripts": "4.0.1",
+    "react-scripts": "^5.0.0",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
@@ -16,7 +16,8 @@
     "build": "export SET NODE_OPTIONS=--openssl-legacy-provider && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "eslint": "eslint ."
+    "eslint": "eslint .",
+    "cypress:open": "cypress open"
   },
   "eslintConfig": {
     "extends": [
@@ -40,6 +41,7 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.2",
-    "eslint-plugin-jest": "^26.0.0"
+    "cypress": "^9.4.1",
+    "eslint-plugin-jest": "^24.1.3"
   }
 }

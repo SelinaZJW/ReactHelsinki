@@ -22,7 +22,7 @@ const App = () => {
   useEffect(() => {
     blogService
       .getAll()
-      .then(blogs => blogs.sort((a, b) => a.likes - b.likes))
+      .then(blogs => blogs.sort((a, b) => b.likes - a.likes))
       .then(blogs => setBlogs(blogs))
   }, [])
 
@@ -169,7 +169,7 @@ const App = () => {
         <div>
           <h2>blogs</h2>
           <Notification message={message} color={color} />
-          <p>{user.name} is logged in <button onClick={handleLogout}>logout</button> </p>
+          <p>{user.name} is logged in <button id='logout-button' onClick={handleLogout}>logout</button> </p>
 
           <Togglable buttonLabel='create new blog' >
             <NewBlogForm  createBlog={createBlog} />

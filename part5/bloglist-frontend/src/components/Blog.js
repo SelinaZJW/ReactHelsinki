@@ -9,7 +9,7 @@ const Blog = ({ blog, user, updateLikes, deleteBlog }) => {
     setDetailsVisible(!detailsVisible)
   }
 
-  const handleUpdate = async (event) => {
+  const handleUpdate = (event) => {
     event.preventDefault()
     const updatedBlog = {
       ...blog,
@@ -22,7 +22,7 @@ const Blog = ({ blog, user, updateLikes, deleteBlog }) => {
   //   window.alert(JSON.stringify(user, null, 2))
   // }, [user])
 
-  const handleRemove = async (event) => {
+  const handleRemove =  (event) => {
     event.preventDefault()
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
       deleteBlog(blog.id)
@@ -37,7 +37,8 @@ const Blog = ({ blog, user, updateLikes, deleteBlog }) => {
   //   // return {display: (blog.user[0] && user.id === blog.user[0].id) ? '': 'none'}
   // }, [user])
 
-  const removeVisibility = { display: (blog.user !==[] && user.id === blog.user[0].id) ? '': 'none' }
+  const removeVisibility = { display: (user.id === blog.user[0]?.id) ? '': 'none' }
+  //const removeVisibility = { display: (blog.user !==[] && user.id === blog.user[0].id) ? '': 'none' }
   const blogStyle = {
     paddingTop: 5,
     paddingLeft: 4,
@@ -58,8 +59,8 @@ const Blog = ({ blog, user, updateLikes, deleteBlog }) => {
           <li>{blog.title} {blog.author} <button onClick={toggleVisibility}>hide</button></li>
           <li>{blog.url}</li>
           <li>likes: {blog.likes} <button onClick={handleUpdate}>like</button></li>
-          <li>{blog.user[0] && blog.user[0].name || 'no user' }</li>
-          <li style={removeVisibility}><button onClick={handleRemove} >remove</button></li>
+          <li>{blog.user[0]?.name || 'no user' }</li>
+          <li style={removeVisibility}><button id='remove-button' onClick={handleRemove} >remove</button></li>
         </ul>
       </div>
     </div>
