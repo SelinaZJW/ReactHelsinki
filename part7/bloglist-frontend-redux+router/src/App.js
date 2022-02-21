@@ -82,8 +82,8 @@ const App = () => {
     event.preventDefault()
     //window.localStorage.removeItem('loggedBlogappUser')
     dispatch(logoutUser())
-    //window.location.reload()
-    navigate('/login')
+    // window.location.reload()
+    navigate('/')
   }
 
 
@@ -127,7 +127,7 @@ const App = () => {
     <div>
       {user === null ? (
         <div>
-          {/* <h2>log into application</h2>
+          <h2>log into application</h2>
           <Notification />
           <LoginForm
             handleLogin={handleLogin}
@@ -135,7 +135,7 @@ const App = () => {
             setUsername={setUsername}
             password={password}
             setPassword={setPassword}
-          /> */}
+          />
         </div>
       ) : (
         <div>
@@ -161,8 +161,7 @@ const App = () => {
 
       <Routes>
         <Route path="/" element={
-          user !== null
-            ?
+          user ?
             (<div>
               <Togglable buttonLabel="create new blog">
                 <NewBlogForm  />
@@ -170,24 +169,10 @@ const App = () => {
               <Blogs blogs={blogs} />
             </div>)
             : <div></div>}
-                // <Navigate replace to="/login" />}   //why redirect to login allll the time????
         />
-        <Route path="/login" element={
-          <div>
-            <h2>log into application</h2>
-            <Notification />
-            <LoginForm
-              handleLogin={handleLogin}
-              username={username}
-              setUsername={setUsername}
-              password={password}
-              setPassword={setPassword}
-            />
-          </div>}
-        />
-        <Route path="/users" element={<UserTable users={users} />} />
-        <Route path="/users/:id" element={<SingleUser users={users} />} />
-        <Route path="/blogs/:id" element={<SingleBlog blogs={blogs} user={user} />} />
+        <Route path="/users" element={user ? <UserTable users={users} /> : <Navigate replace to="/"/>} />
+        <Route path="/users/:id" element={ user ? <SingleUser users={users} /> : <Navigate replace to="/"/>} />
+        <Route path="/blogs/:id" element={ user ? <SingleBlog blogs={blogs} user={user} /> : <Navigate replace to="/"/> } />
       </Routes>
     </div>
   )
