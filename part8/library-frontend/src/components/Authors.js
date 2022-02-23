@@ -5,7 +5,7 @@ import SetBirthYear from './SetBirthYear'
 const Authors = (props) => {
   const result = useQuery(ALL_AUTHORS)
   console.log(result.data)
-  const authors = result.data.allAuthors
+  const authors = result.data ? result.data.allAuthors : []  //why have to control for the first second?
   
   if (!props.show) {
     return null

@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react"
-import { useMutation } from "@apollo/client"
+import { mergeOptions, useMutation } from "@apollo/client"
 import { UPDATE_AUTHOR } from "../queries"
 
 const SetBirthYear = ({authors}) => {
   const [name, setName] = useState('')
   const [year, setYear] = useState('')
 
-  const [ updateAuthor, result ] = useMutation(UPDATE_AUTHOR)
+  const [ updateAuthor, {data} ] = useMutation(UPDATE_AUTHOR)
 
   const handleUpdate = async (event) => {
     event.preventDefault()
@@ -18,7 +18,7 @@ const SetBirthYear = ({authors}) => {
     setYear('')
   }
 
-  console.log(result) //why is result.data not defined??? in mutation
+  console.log(data) //why is result.data not defined??? in mutation, 
   // useEffect(() => {
   //   if (result.data && result.data.editAuthor === null) {
   //     console.log('author not found')
@@ -33,9 +33,10 @@ const SetBirthYear = ({authors}) => {
           name
           <input value={name} onChange={({target}) => setName(target.value)} />
         </div> */}
-        <select value={name} onChange={({target}) => setName(target.value)} >
+        <select value={mergeOptions.value} onChange={({target}) => setName(target.value)} >
+          <option>find author</option>
           {authors.map(a => 
-            <option value={a.name}>{a.name}</option>
+            <option key={a.id} value={a.name} >{a.name}</option>
             )}
         </select>
         <div>

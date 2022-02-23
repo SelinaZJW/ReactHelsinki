@@ -12,8 +12,16 @@ const NewBook = (props) => {
   const [ createBook ] = useMutation(CREATE_BOOK, {
     refetchQueries: [  ALL_AUTHORS, ALL_BOOKS ],  
     onError: (error) => {
-      console.log(error.graphQLErrors[0].message)
-    }
+      console.log(error)
+    },
+    // update: (cache, response) => {
+    //   cache.updateQuery({query: [ALL_BOOKS]} , ({ allAuthors, allBooks }) => { ///how to add multiple queries here????
+    //     return {
+    //       allBooks: allBooks.concat(response.data.addBook),
+    //       //allAuthors: allAuthors.concat(response.data.addAuthor),
+    //     }
+    //   })
+    // }
   })
 
   if (!props.show) {
@@ -23,7 +31,7 @@ const NewBook = (props) => {
   const handleCreate = async (event) => {
     event.preventDefault()
 
-    createBook({ variables: {title, published, author, genres}})
+    createBook({ variables: {title, author, published, genres}})
     console.log('add book...')
 
     setTitle('')
