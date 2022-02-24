@@ -1,6 +1,7 @@
 import { useMutation } from '@apollo/client'
 import { useState } from 'react'
 import { ALL_AUTHORS, ALL_BOOKS, CREATE_BOOK } from '../queries'
+import { updateCache } from '../App'
 
 const NewBook = (props) => {
   const [title, setTitle] = useState('')
@@ -10,18 +11,23 @@ const NewBook = (props) => {
   const [genres, setGenres] = useState([])
 
   const [ createBook ] = useMutation(CREATE_BOOK, {
-    refetchQueries: [  ALL_AUTHORS, ALL_BOOKS ],  
+    //refetchQueries: [  ALL_AUTHORS, ALL_BOOKS ],  
     onError: (error) => {
       console.log(error)
     },
-    // update: (cache, response) => {
-    //   cache.updateQuery({query: [ALL_BOOKS]} , ({ allAuthors, allBooks }) => { ///how to add multiple queries here????
-    //     return {
-    //       allBooks: allBooks.concat(response.data.addBook),
-    //       //allAuthors: allAuthors.concat(response.data.addAuthor),
-    //     }
-    //   })
-    // }
+    update: (cache, response) => {
+      // cache.updateQuery({query: [ALL_BOOKS]} , ({ allAuthors, allBooks }) => { ///how to add multiple queries here????
+      //   return {
+      //     allBooks: allBooks.concat(response.data.addBook),
+      //     //allAuthors: allAuthors.concat(response.data.addAuthor),
+      //   }
+      // })
+      
+      console.log(response.data)
+      updateCache(cache, { query: ALL_BOOKS}, response.data.addBook)
+      //updateCache(cache, { query: ALL_AUTHORS}, response.data.addBook.author)
+
+    }
   })
 
   if (!props.show) {

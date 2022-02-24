@@ -7,10 +7,15 @@ const Login = ({ show, setToken, setPage }) => {
   const [password, setPassword] = useState('')
 
   const [ login, {data} ] = useMutation(LOGIN, {    //data, not result.data
-    //refetchQueries: ({query: ME}), //why refetch not working??? so that recommend can work
+    refetchQueries: ({query: ME}), //why refetch not working??? so that recommend can work
     onError: (error) => {
       console.log(error.graphQLErrors[0].message)
-    }
+    }, 
+    // update: (cache, response) => {
+    //   cache.updateQuery({query: ME} , ({ me }) => {
+    //     console.log(response.data)
+    //   })
+    // }
   })
 
   const handleLogin = async (event) => {

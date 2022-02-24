@@ -1,11 +1,27 @@
 import { useEffect, useState } from 'react'
-import { useQuery, useApolloClient } from '@apollo/client'
-import { ALL_BOOKS } from './queries'
+import { useQuery, useSubscription, useApolloClient, } from '@apollo/client'
+import { ALL_AUTHORS, ALL_BOOKS, BOOK_ADDED } from './queries'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
 import Login from './components/Login'
 import Recommend from './components/Recommend'
+
+export const updateCache = (cache, query, addedBook) => {
+  const uniqByName = (a) => {
+    let seen = new Set()
+    return a.filter((item) => {
+      let k = item.title
+      return seen.has(k) ? false : seen.add(k)
+    })
+  }
+  cache.updateQuery(query, ({ allBooks }) => {
+    return {
+      allBooks: uniqByName(allBooks.concat(addedBook)),
+    }
+  })
+}
+
 
 const App = () => {
   const [page, setPage] = useState('authors')
@@ -20,6 +36,23 @@ const App = () => {
     console.log(loggedInToken)
     setToken(loggedInToken)
   }, [])
+
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      console.log(subscriptionData)
+      const addedBook = subscriptionData.data.bookAdded 
+      const author = subscriptionData.data.bookAdded.author
+
+      // client.cache.updateQuery({ query: ALL_BOOKS }, ({ allBooks }) => {
+      //   return {
+      //     allBooks: allBooks.concat(addedBook),
+      //   }
+      // })
+      updateCache(client.cache, { query: ALL_BOOKS }, addedBook)   //why not update for Books component query?
+      //updateCache(client.cache, { query: ALL_AUTHORS }, author) //how to update for author too? when author is not already there
+      window.alert(`a new book ${addedBook.title} is added`)
+    }
+  })
 
   const client = useApolloClient()
 
