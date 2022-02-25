@@ -7,7 +7,6 @@ const Book = require('./models/book')
 const User = require('./models/user')
 
 const jwt = require('jsonwebtoken')
-const book = require('./models/book')
 require('dotenv').config()
 const JWT_SECRET = process.env.JWT_SECRET
 const PASSWORD = process.env.PASSWORD

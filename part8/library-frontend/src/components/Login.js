@@ -7,15 +7,22 @@ const Login = ({ show, setToken, setPage }) => {
   const [password, setPassword] = useState('')
 
   const [ login, {data} ] = useMutation(LOGIN, {    //data, not result.data
-    refetchQueries: ({query: ME}), //why refetch not working??? so that recommend can work
+    //refetchQueries: [{query: ME}], //why refetch not working??? so that recommend can work
     onError: (error) => {
-      console.log(error.graphQLErrors[0].message)
+
+      console.log(error)
     }, 
-    // update: (cache, response) => {
-    //   cache.updateQuery({query: ME} , ({ me }) => {
-    //     console.log(response.data)
-    //   })
-    // }
+    update: (cache, response) => {
+      const token = response.data.login.value
+      localStorage.setItem('library-user-token', token)
+      setToken(token)
+      //console.log(response.data.login.value)
+
+      cache.updateQuery({query: ME} , ({ me }) => {
+        console.log(response.data)
+        console.log("me", me)
+      })
+    }
   })
 
   const handleLogin = async (event) => {
@@ -37,9 +44,9 @@ const Login = ({ show, setToken, setPage }) => {
       console.log(`token: ${token}`)
       
       setToken(token)
-      localStorage.setItem('library-user-token', token)
+      //localStorage.setItem('library-user-token', token)
     }
-  }, [data])
+  }, [data, setToken])
 
 
   if (!show) {

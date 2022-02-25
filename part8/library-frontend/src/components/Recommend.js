@@ -4,7 +4,7 @@ import { ME } from "../queries"
 const Recommend = ({ show, books }) => {
   const result = useQuery(ME)
   const me = result.data ? result.data.me : []
-  console.log(me)
+  console.log("me", me)
   const favoriteGenre = me? me.favoriteGenre : []
 
   const recommendedBooks = books.filter(b => b.genres.includes(favoriteGenre))
