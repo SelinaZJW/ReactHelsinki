@@ -1,0 +1,12 @@
+{
+  "compilerOptions":{
+    "noImplicitAny": true, 
+    "types": ["node"] 
+  },
+  "include": [
+    "**/*.ts"
+  ], 
+  "exclude": [
+      "node_modules"
+    ]
+}
