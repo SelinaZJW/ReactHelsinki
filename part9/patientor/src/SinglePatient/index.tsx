@@ -2,12 +2,12 @@
 import React from "react";
 import axios from "axios";
 
-import { Diagnosis, Entry, Patient } from "../types";
+import { Diagnosis, Entry, NewEntry, Patient } from "../types";
 import { apiBaseUrl } from "../constants";
 import { addEntry, useStateValue } from "../state";
 import { useParams } from "react-router-dom";
 import { Header, Container, Icon, SemanticICONS, Segment } from "semantic-ui-react";
-import AddEntryForm, { EntryFormValuesHealthCheck } from "../AddEntryForm";
+import AddEntryForm from "../AddEntryForm";
 
 // const HospitalEntry = ({entry, allDiagnoses}) => {
 //   return (
@@ -37,6 +37,7 @@ const EntryDetails: React.FC<{entry: Entry, allDiagnoses: Diagnosis[]}> = ({ ent
   let heartVariation: unknown;
   let dischargeVariation: unknown;
   let employerVariation: unknown;
+  let sickLeaveVariation: unknown;
 
   const oneHollowHeart = <Icon size='tiny' name='heart outline' />;
   const oneFullHeart =  <Icon size='tiny' name='heart' />;
@@ -65,6 +66,9 @@ const EntryDetails: React.FC<{entry: Entry, allDiagnoses: Diagnosis[]}> = ({ ent
     case "OccupationalHealthcare":
       iconVariation = <Icon size='large' name='ambulance' />;
       employerVariation = <p>employer: {entry.employerName}</p>;
+      sickLeaveVariation = <p>sick leave: from {entry.sickLeave?.startDate} to {entry.sickLeave?.endDate} </p>;
+      break;
+    case "Select Type":
       break;
     default:
       return assertNever(entry);
@@ -74,7 +78,7 @@ const EntryDetails: React.FC<{entry: Entry, allDiagnoses: Diagnosis[]}> = ({ ent
     <Segment raised>
       <Header as='h2'>{entry.date} {iconVariation}</Header>
       <p><i>{entry.description}</i></p>
-      <>{heartVariation} {dischargeVariation} {employerVariation}</>
+      <>{heartVariation} {dischargeVariation} {employerVariation} {sickLeaveVariation}</>
       <ul>
         {entry.diagnosisCodes?.map((d: string) => <li key={d}> {d} {' -- '} {allDiagnoses.find((a: Diagnosis) => a.code===d).name} </li>)}
       </ul>
@@ -129,7 +133,7 @@ const SinglePatient = () => {
   //     healthCheckRating: HealthCheckRating.Healthy
   // }});
 
-  const submitNewEntry = async (values: EntryFormValuesHealthCheck, {resetForm} ) => {
+  const submitNewEntry = async (values: NewEntry, {resetForm} ) => {
     console.log('submitted new entry');
     try {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -176,7 +180,7 @@ const SinglePatient = () => {
           );
         })}
       </Container>
-      <Header as='h3'>Health Check new entry: </Header>
+      <Header as='h3'>new entry: </Header>
       <AddEntryForm onSubmit={submitNewEntry} onCancel={onCancel} />
     </div>
   );

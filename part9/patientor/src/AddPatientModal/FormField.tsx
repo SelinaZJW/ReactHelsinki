@@ -3,6 +3,36 @@ import { ErrorMessage, Field, FieldProps, FormikProps } from "formik";
 import { Dropdown, DropdownProps, Form } from "semantic-ui-react";
 import { Diagnosis, Gender } from "../types";
 
+export type TypeOptions = {
+  value: "Hospital" | "HealthCheck" | "OccupationalHealthcare" | "Select Type";
+  label: string;
+};
+
+type SelectTypeProps = {
+  name: string;
+  label: string;
+  options: TypeOptions[];
+  onChange: (e) => void
+};
+
+export const SelectTypeField = ({
+  name,
+  label,
+  options,
+  onChange
+}: SelectTypeProps) => (
+  <Form.Field>
+    <label>{label}</label>
+    <Field as="select" name={name} className="ui dropdown" onChange= {onChange}>
+      {options.map(option => (
+        <option key={option.value} value={option.value}>
+          {option.label || option.value}
+        </option>
+      ))}
+    </Field>
+  </Form.Field>
+);
+
 // structure of a single option
 export type GenderOption = {
   value: Gender;
