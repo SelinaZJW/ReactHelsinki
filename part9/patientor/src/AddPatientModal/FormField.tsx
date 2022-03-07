@@ -4,7 +4,7 @@ import { Dropdown, DropdownProps, Form } from "semantic-ui-react";
 import { Diagnosis, Gender } from "../types";
 
 export type TypeOptions = {
-  value: "Hospital" | "HealthCheck" | "OccupationalHealthcare" | "Select Type";
+  value: "Hospital" | "HealthCheck" | "OccupationalHealthcare";
   label: string;
 };
 
@@ -12,18 +12,18 @@ type SelectTypeProps = {
   name: string;
   label: string;
   options: TypeOptions[];
-  onChange: (e) => void
+  // onChange: (e) => void
 };
 
 export const SelectTypeField = ({
   name,
   label,
   options,
-  onChange
+  // onChange
 }: SelectTypeProps) => (
   <Form.Field>
     <label>{label}</label>
-    <Field as="select" name={name} className="ui dropdown" onChange= {onChange}>
+    <Field as="select" name={name} className="ui dropdown" >
       {options.map(option => (
         <option key={option.value} value={option.value}>
           {option.label || option.value}

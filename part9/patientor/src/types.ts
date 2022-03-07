@@ -26,10 +26,6 @@ export enum HealthCheckRating {
 }
 
 
-export interface SelectType extends BaseEntry {
-  type: "Select Type"
-}
-
 export interface HealthCheckEntry extends BaseEntry {
   type: "HealthCheck";
   healthCheckRating: HealthCheckRating;
@@ -50,8 +46,7 @@ interface OccupationalHealthcareEntry extends BaseEntry {
 export type Entry =
   | HospitalEntry
   | OccupationalHealthcareEntry
-  | HealthCheckEntry
-  | SelectType;
+  | HealthCheckEntry;
 
 
 export interface Patient {

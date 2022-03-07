@@ -1,5 +1,5 @@
 import { Field, Form, Formik } from 'formik';
-import React, { useState } from 'react';
+import React from 'react';
 import { Button, Grid } from 'semantic-ui-react';
 import { DiagnosisSelection, NumberField, SelectTypeField, TextField, TypeOptions } from '../AddPatientModal/FormField';
 import { useStateValue } from '../state';
@@ -23,7 +23,7 @@ const TypeVariations: React.FC<{type: string}> = ({ type }) => {
           <Field
             label="Discharge  Date"
             placeholder="YYYY-MM-DD"
-            name="DischargeDate"
+            name="discharge.date"
             component={TextField}
             />
         </Grid.Column>
@@ -31,7 +31,7 @@ const TypeVariations: React.FC<{type: string}> = ({ type }) => {
           <Field
             label="Discharge Criteria"
             placeholder="criteria"
-            name="DischargeCriteria"
+            name="discharge.criteria"
             component={TextField}
             />
         </Grid.Column>
@@ -62,7 +62,7 @@ const TypeVariations: React.FC<{type: string}> = ({ type }) => {
               <Field
                 label="Sickleave Start Date"
                 placeholder="YYYY-MM-DD"
-                name="sickleaseStartDate"
+                name="sickLeave.startDate"
                 component={TextField}
                 />
             </Grid.Column>
@@ -70,7 +70,7 @@ const TypeVariations: React.FC<{type: string}> = ({ type }) => {
               <Field
                 label="Sickleave End Date"
                 placeholder="YYYY-MM-DD"
-                name="sickleaseEndDate"
+                name="sickLeave.endDate"
                 component={TextField}
                 />
             </Grid.Column>
@@ -85,28 +85,33 @@ const TypeVariations: React.FC<{type: string}> = ({ type }) => {
   }
 
   return <>{variation}</>;
+  // value changing from undefined to defined?? can't POST value 
 };
 
 const typeOptions: TypeOptions[] = [
   { value: "Hospital", label: "Hospital" },
   { value: "HealthCheck", label: "HealthCheck" },
-  { value: "OccupationalHealthcare", label: "OccupationalHealthcare" },
-  { value: "Select Type", label: "Select Type"}
+  { value: "OccupationalHealthcare", label: "OccupationalHealthcare" }
 ];
 
 const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
   const [{ diagnoses }] = useStateValue();
-  const [type, setType] = useState('Hospital');
+  // const [type, setType] = useState('Hospital');
 
   return (
     <Formik
     initialValues={{
-      type: 'Select Type',
+      type: 'Hospital',
       description: '',
       date: '',
       specialist: '',
       diagnosisCodes: [],
-      //healthCheckRating: HealthCheckRating.Healthy
+      discharge: {date: '', criteria: ''},
+      healthCheckRating: 0,
+      sickLeave: {startDate: '', endDate: ''},
+      employerName: ''
+
+      //need to specific/define all the initial values, to send the values
     }}
     onSubmit={onSubmit}
     // validate={values => {
@@ -114,7 +119,7 @@ const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
     // }}
   >
 
-    {({ isValid, dirty, setFieldValue, setFieldTouched }) => {
+    {({ isValid, dirty, setFieldValue, setFieldTouched, values }) => {
 
       return (
         <div>
@@ -124,8 +129,10 @@ const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
             name="type"
             label='Type'
             options={typeOptions}
-            onChange={(e)=> setType(e.target.value)}
+            // onChange={(e)=> setType(e.target.value)}
           />
+          {/* why is this not changing with selection?
+          how to POST type with other values */}
           <Field
             label="Description"
             placeholder="Description"
@@ -157,7 +164,7 @@ const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
             min={0}
             max={3}
             /> */}
-          <TypeVariations type={type}/>
+          <TypeVariations type={values.type}/>
 
           <Grid>
             <Grid.Column floated="left" width={5}>

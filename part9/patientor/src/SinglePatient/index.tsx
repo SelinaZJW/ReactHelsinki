@@ -68,8 +68,6 @@ const EntryDetails: React.FC<{entry: Entry, allDiagnoses: Diagnosis[]}> = ({ ent
       employerVariation = <p>employer: {entry.employerName}</p>;
       sickLeaveVariation = <p>sick leave: from {entry.sickLeave?.startDate} to {entry.sickLeave?.endDate} </p>;
       break;
-    case "Select Type":
-      break;
     default:
       return assertNever(entry);
   }
@@ -118,20 +116,7 @@ const SinglePatient = () => {
     iconGender = 'venus';
   }
 
-  // const handleReset = (resetForm) => {
-  //   if (window.confirm('Reset?')) {
-  //     resetForm();
-  //   }
-  // };
 
-  // const formik = useFormik({onreset: () =>{
-  //   type: 'HealthCheck',
-  //     description: '',
-  //     date: '',
-  //     specialist: '',
-  //     diagnosisCodes: [],
-  //     healthCheckRating: HealthCheckRating.Healthy
-  // }});
 
   const submitNewEntry = async (values: NewEntry, {resetForm} ) => {
     console.log('submitted new entry');
