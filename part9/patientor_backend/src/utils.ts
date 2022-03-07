@@ -1,4 +1,4 @@
-import { Entry, Gender, NewPatientEntry} from './types';
+import { Entry, Gender, NewEntry, NewPatientEntry} from './types';
 
 const isString = (text: unknown): text is string => {
   return typeof text === 'string' || text instanceof String;
@@ -54,14 +54,18 @@ const parseOccupation = (occupation: unknown): string => {
   return occupation;
 };
 
-// const parseEntries = (entries: unknown): Entry[] => {
-//   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-//   const types = entries.map((e: Entry) => e.type) as string;
-//   if (!types.includes('Hospital') && !types.includes('HealthCheck') && !types.includes('OccupationalHealthcare')) {
-//     throw new Error('Incorrect or missing type');
-//   }
-//   return entries;
-// };
+export const parseNewEntry = (entry: NewEntry ): NewEntry => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  const type = entry.type;
+  const hasProperty= (a: string) => Object.keys(entry).includes(a);
+  if (type !== "Hospital" && type !== "HealthCheck" && type !== "OccupationalHealthcare") {
+    throw new Error('Incorrect or missing type');
+  }
+  if (!hasProperty('date') || !hasProperty('specialist') || !hasProperty('description') ) {
+    throw new Error('Incorrect or missing properties');
+  }
+  return entry;
+};
 
 type Field = { name: unknown, ssn: unknown, dateOfBirth: unknown, gender: unknown, occupation: unknown, entries: Entry[]}; //should be Entry[],but don;t know how to parse yet
 

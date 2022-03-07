@@ -90,7 +90,7 @@ const SinglePatient = () => {
   const entries = patient.entries? patient.entries : [];
   const allDiagnoses = Object.values(diagnoses);
 
- const showSinglePatient = async (id: string) => {
+ const getSinglePatient = async (id: string) => {
     try {
       const { data: singlePatient } = await axios.get<Patient>(
         `${apiBaseUrl}/patients/${id}`
@@ -102,7 +102,7 @@ const SinglePatient = () => {
   };
 
   if (!patient.ssn) {
-    void showSinglePatient(id);
+    void getSinglePatient(id);
   }
 
   let iconGender = 'genderless' as SemanticICONS;

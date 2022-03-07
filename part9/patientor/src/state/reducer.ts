@@ -63,13 +63,25 @@ export const reducer = (state: State, action: Action): State => {
     case "SINGLE_PATIENT":
       const id = action.payload.id;
       const existingPatient = Object.values(state.patients).find(p => p.id ===id);
-      console.log(existingPatient.id);
+      console.log(existingPatient);
       const updatedPatients = {...state.patients, [id]: action.payload };  //updating the object
-
-      if (existingPatient.ssn) {
-        return {...state};
-      } else {
-        return {
+      
+// if (existingPatient.ssn) {
+//         return {...state};
+//       } else {
+//         return {
+//         ...state,
+//         patients: {
+//           // existingPatient: action.payload, //not adding, but updating
+//           // ...state.patients,
+//           ...updatedPatients
+//         },
+//         diagnoses: {
+//           ...state.diagnoses
+//         }
+//       };
+//     }
+      return {
         ...state,
         patients: {
           // existingPatient: action.payload, //not adding, but updating
@@ -80,7 +92,7 @@ export const reducer = (state: State, action: Action): State => {
           ...state.diagnoses
         }
       };
-    }
+      
     default:
       return state;
   }
