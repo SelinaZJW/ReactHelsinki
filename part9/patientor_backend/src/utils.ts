@@ -1,4 +1,4 @@
-import { Gender, NewPatientEntry } from './types';
+import { Entry, Gender, NewPatientEntry} from './types';
 
 const isString = (text: unknown): text is string => {
   return typeof text === 'string' || text instanceof String;
@@ -54,16 +54,26 @@ const parseOccupation = (occupation: unknown): string => {
   return occupation;
 };
 
-type Field = { name: unknown, ssn: unknown, dateOfBirth: unknown, gender: unknown, occupation: unknown };
+// const parseEntries = (entries: unknown): Entry[] => {
+//   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+//   const types = entries.map((e: Entry) => e.type) as string;
+//   if (!types.includes('Hospital') && !types.includes('HealthCheck') && !types.includes('OccupationalHealthcare')) {
+//     throw new Error('Incorrect or missing type');
+//   }
+//   return entries;
+// };
 
-const toNewPatient = ({ name, ssn, dateOfBirth, gender, occupation }: Field): NewPatientEntry => {
+type Field = { name: unknown, ssn: unknown, dateOfBirth: unknown, gender: unknown, occupation: unknown, entries: Entry[]}; //should be Entry[],but don;t know how to parse yet
+
+const toNewPatient = ({ name, ssn, dateOfBirth, gender, occupation, entries }: Field): NewPatientEntry => {
   const newEntry: NewPatientEntry = {
-    name: parseName(name), 
+    name: parseName(name),
     dateOfBirth: parseDateOfBirth(dateOfBirth),
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     ssn: parseSSN(ssn),
     gender: parseGender(gender),
-    occupation: parseOccupation(occupation)
+    occupation: parseOccupation(occupation),
+    entries: entries
   };
 
   return newEntry;

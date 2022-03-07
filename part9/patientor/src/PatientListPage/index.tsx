@@ -7,7 +7,8 @@ import AddPatientModal from "../AddPatientModal";
 import { Patient } from "../types";
 import { apiBaseUrl } from "../constants";
 import HealthRatingBar from "../components/HealthRatingBar";
-import { useStateValue } from "../state";
+import { useStateValue, addPatient } from "../state";
+import { Link } from "react-router-dom";
 
 const PatientListPage = () => {
   const [{ patients }, dispatch] = useStateValue();
@@ -28,13 +29,24 @@ const PatientListPage = () => {
         `${apiBaseUrl}/patients`,
         values
       );
-      dispatch({ type: "ADD_PATIENT", payload: newPatient });
+      dispatch(addPatient(newPatient));
       closeModal();
     } catch (e) {
       console.error(e.response?.data || 'Unknown Error');
       setError(e.response?.data?.error || 'Unknown error');
     }
   };
+
+  // const showSinglePatient = async (id: string) => {
+  //   try {
+  //     const { data: singlePatient } = await axios.get<Patient>(
+  //       `${apiBaseUrl}/patients/${id}`
+  //     );
+  //     dispatch({ type: "SINGLE_PATIENT", payload: singlePatient });
+  //   } catch (e) {
+  //     console.error(e);
+  //   }
+  // };
 
   return (
     <div className="App">
@@ -53,7 +65,7 @@ const PatientListPage = () => {
         <Table.Body>
           {Object.values(patients).map((patient: Patient) => (
             <Table.Row key={patient.id}>
-              <Table.Cell>{patient.name}</Table.Cell>
+              <Table.Cell><Link to={`/patients/${patient.id}`}>{patient.name}</Link></Table.Cell>
               <Table.Cell>{patient.gender}</Table.Cell>
               <Table.Cell>{patient.occupation}</Table.Cell>
               <Table.Cell>
