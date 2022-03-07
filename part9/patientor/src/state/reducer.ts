@@ -17,6 +17,10 @@ export type Action =
   |  {
       type: "GET_DIAGNOSES";
       payload: Diagnosis[];
+    }
+  | {
+      type: "ADD_ENTRY";
+      payload: Patient;
     };
 
 export const reducer = (state: State, action: Action): State => {
@@ -92,7 +96,22 @@ export const reducer = (state: State, action: Action): State => {
           ...state.diagnoses
         }
       };
-      
+    case "ADD_ENTRY": 
+      const changedId = action.payload.id;
+      const originalPatient = Object.values(state.patients).find(p => p.id ===changedId);
+      console.log(originalPatient);
+      const updatedWholePatients = {...state.patients, [changedId]: action.payload };  //updating the object
+
+      return {
+        ...state,
+        patients: {
+          ...updatedWholePatients
+        },
+        diagnoses: {
+          ...state.diagnoses
+        }
+      };
+
     default:
       return state;
   }
@@ -126,3 +145,9 @@ export const getDiagnoses = (diagnoses: Diagnosis[]): Action => {
   };
 };
 
+export const addEntry = (updatedPatient: Patient): Action => {
+  return {
+    type: "ADD_ENTRY",
+    payload: updatedPatient
+  };
+};

@@ -4,9 +4,10 @@ import axios from "axios";
 
 import { Diagnosis, Entry, Patient } from "../types";
 import { apiBaseUrl } from "../constants";
-import { useStateValue } from "../state";
+import { addEntry, useStateValue } from "../state";
 import { useParams } from "react-router-dom";
 import { Header, Container, Icon, SemanticICONS, Segment } from "semantic-ui-react";
+import AddEntryForm, { EntryFormValuesHealthCheck } from "../AddEntryForm";
 
 // const HospitalEntry = ({entry, allDiagnoses}) => {
 //   return (
@@ -113,7 +114,45 @@ const SinglePatient = () => {
     iconGender = 'venus';
   }
 
-  
+  // const handleReset = (resetForm) => {
+  //   if (window.confirm('Reset?')) {
+  //     resetForm();
+  //   }
+  // };
+
+  // const formik = useFormik({onreset: () =>{
+  //   type: 'HealthCheck',
+  //     description: '',
+  //     date: '',
+  //     specialist: '',
+  //     diagnosisCodes: [],
+  //     healthCheckRating: HealthCheckRating.Healthy
+  // }});
+
+  const submitNewEntry = async (values: EntryFormValuesHealthCheck, {resetForm} ) => {
+    console.log('submitted new entry');
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const {data: updatedPatient} = await axios.post(`${apiBaseUrl}/patients/${id}/entries`, values);
+      console.log(updatedPatient);
+      dispatch(addEntry(updatedPatient));
+      resetForm({});
+    } catch (error: unknown) {
+      let errorMessage = 'Something went wrong.';
+      if(axios.isAxiosError(error) && error.response) {
+        console.error(error.response.data);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        errorMessage = error.response.data.error;
+      }
+      //setError(errorMessage);
+      console.log(errorMessage);
+    }
+  };
+
+  const onCancel = () => {
+    console.log('canceled entry');
+
+  };
   
   return (
     <div>
@@ -137,6 +176,8 @@ const SinglePatient = () => {
           );
         })}
       </Container>
+      <Header as='h3'>Health Check new entry: </Header>
+      <AddEntryForm onSubmit={submitNewEntry} onCancel={onCancel} />
     </div>
   );
 };

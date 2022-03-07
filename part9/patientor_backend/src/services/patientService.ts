@@ -29,7 +29,7 @@ const addPatient = (entry: NewPatientEntry): PatientEntry => {
 };
 
 
-const addEntry = (entry: NewEntry, id: string): Entry => {
+const addEntry = (entry: NewEntry, id: string): PatientEntry => {
   const patient = patients.find(p => p.id===id) as PatientEntry;
   const entries = patient.entries;
   console.log({id: 1, ...entry});
@@ -40,7 +40,7 @@ const addEntry = (entry: NewEntry, id: string): Entry => {
   console.log(newEntry);
   entries.push(newEntry as Entry);
 
-  return newEntry;
+  return patient;
 };
 
 export default {

@@ -42,16 +42,6 @@ const PatientListPage = () => {
     }
   };
 
-  // const showSinglePatient = async (id: string) => {
-  //   try {
-  //     const { data: singlePatient } = await axios.get<Patient>(
-  //       `${apiBaseUrl}/patients/${id}`
-  //     );
-  //     dispatch({ type: "SINGLE_PATIENT", payload: singlePatient });
-  //   } catch (e) {
-  //     console.error(e);
-  //   }
-  // };
 
   return (
     <div className="App">

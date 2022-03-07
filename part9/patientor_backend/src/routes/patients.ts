@@ -52,8 +52,8 @@ router.post('/:id/entries', (req, res) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     const newEntry = parseNewEntry(req.body);  
     console.log(req.body);
-    const addedEntry = patientService.addEntry(newEntry, req.params.id);
-    res.json(addedEntry);
+    const updatedPatient = patientService.addEntry(newEntry, req.params.id);
+    res.json(updatedPatient);
   } catch (error: unknown) {
     let errorMessage = 'Something went wrong.';
     if (error instanceof Error) {
